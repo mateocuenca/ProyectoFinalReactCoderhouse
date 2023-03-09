@@ -1,21 +1,24 @@
-import React from "react";
-import { Grid, Typography } from "@mui/material";
+import { Grid } from "@mui/material";
+import { useParams } from "react-router-dom";
+import Item from "../Item.jsx";
 
-const ItemListContainer = ({ greeting }) => {
+const ItemListContainer = ({ products }) => {
+  const { category } = useParams();
+  const productsByCategory = category
+    ? products.filter((product) => category === product.category)
+    : products;
+
   return (
     <Grid
       container
-      spacing={0}
-      direction="column"
-      justifyContent="center"
-      alignItems="center"
-      style={{ minHeight: "100vh" }}
+      spacing={{ xs: 2, md: 5 }}
+      columnSpacing={{ xs: 4, sm: 8, md: 12 }}
     >
-      <Grid item>
-        <Typography variant="h4" component="div" sx={{ color: "#023020" }}>
-          {greeting}
-        </Typography>
-      </Grid>
+      {productsByCategory.map((product) => (
+        <Grid item xs={12} key={product.id}>
+          <Item key={product.id} product={product} />
+        </Grid>
+      ))}
     </Grid>
   );
 };
