@@ -6,6 +6,8 @@ import {
   Button,
   Box,
   useMediaQuery,
+  Menu,
+  MenuItem,
 } from "@mui/material";
 import CartWidget from "../CartWidget/CartWidget";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -17,10 +19,6 @@ import clsx from "clsx";
 const Navbar = () => {
   const [showStack, setShowStack] = useState(false);
 
-  const toggleStack = () => {
-    setShowStack(!showStack);
-  };
-
   // useMediaQuery to get screen size
   const isSmallScreen = useMediaQuery((theme) =>
     theme.breakpoints.between("xs", "md")
@@ -29,6 +27,15 @@ const Navbar = () => {
   const isScreenMdUp = useMediaQuery((theme) => theme.breakpoints.up("md"));
 
   useEffect(() => setShowStack(false), [isScreenMdUp]);
+
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   return (
     <AppBar
@@ -44,13 +51,17 @@ const Navbar = () => {
     >
       <Box sx={{ display: { xs: "flex", md: "none" } }}>
         <Button
+          id="basic-button"
+          aria-controls={open ? "basic-menu" : undefined}
+          aria-haspopup="true"
+          aria-expanded={open ? "true" : undefined}
+          onClick={handleClick}
           sx={{
             "&:hover": {
               bgcolor: "transparent",
             },
           }}
           disableRipple
-          onClick={toggleStack}
         >
           <MenuIcon
             className={styles.menuIcon}
@@ -62,6 +73,88 @@ const Navbar = () => {
             fontSize="large"
           />
         </Button>
+        <Menu
+          id="basic-menu"
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+          MenuListProps={{
+            "aria-labelledby": "basic-button",
+          }}
+        >
+          <NavLink
+            to="/category/men's clothing"
+            className={(navData) =>
+              navData.isActive ? styles.navLinkActive : styles.navLink
+            }
+          >
+            <MenuItem
+              onClick={handleClose}
+              sx={{
+                "&:hover": {
+                  bgcolor: "transparent",
+                },
+                fontWeight: "inherit",
+              }}
+            >
+              Men
+            </MenuItem>
+          </NavLink>
+          <NavLink
+            to="/category/women's clothing"
+            className={(navData) =>
+              navData.isActive ? styles.navLinkActive : styles.navLink
+            }
+          >
+            <MenuItem
+              onClick={handleClose}
+              sx={{
+                "&:hover": {
+                  bgcolor: "transparent",
+                },
+                fontWeight: "inherit",
+              }}
+            >
+              Women
+            </MenuItem>
+          </NavLink>
+          <NavLink
+            to="/category/jewelery"
+            className={(navData) =>
+              navData.isActive ? styles.navLinkActive : styles.navLink
+            }
+          >
+            <MenuItem
+              onClick={handleClose}
+              sx={{
+                "&:hover": {
+                  bgcolor: "transparent",
+                },
+                fontWeight: "inherit",
+              }}
+            >
+              Jewerly
+            </MenuItem>
+          </NavLink>
+          <NavLink
+            to="/category/electronics"
+            className={(navData) =>
+              navData.isActive ? styles.navLinkActive : styles.navLink
+            }
+          >
+            <MenuItem
+              onClick={handleClose}
+              sx={{
+                "&:hover": {
+                  bgcolor: "transparent",
+                },
+                fontWeight: "inherit",
+              }}
+            >
+              Electronics
+            </MenuItem>
+          </NavLink>
+        </Menu>
       </Box>
 
       <NavLink to="/" className={clsx(styles.navLink, styles.navLinkLogo)}>
@@ -82,20 +175,11 @@ const Navbar = () => {
 
       {((isSmallScreen && showStack) || !isSmallScreen) && (
         <Stack
-          direction={{ xs: "column", md: "row" }}
+          direction={{ xs: "row" }}
           spacing={3}
           sx={{
             color: "#070707",
-            position: { xs: "absolute", md: "static" },
-            top: { xs: "64px", md: "auto" },
-            left: { xs: "9px", md: "auto" },
-            right: { xs: "20px", md: "auto" },
-            height: { xs: "auto", md: "100%" },
-            width: { xs: "calc(100% - 540px)", md: "auto" },
-            paddingLeft: { xs: 10, md: 0 },
-            paddingTop: { xs: 5, md: 0 },
-
-            backgroundColor: "white",
+            height: "100%",
           }}
         >
           <NavLink
@@ -180,7 +264,6 @@ const Navbar = () => {
           </NavLink>
         </Stack>
       )}
-
       <Button color="inherit" sx={{ color: "#023020" }}>
         {<CartWidget cartItems={4} />}
       </Button>

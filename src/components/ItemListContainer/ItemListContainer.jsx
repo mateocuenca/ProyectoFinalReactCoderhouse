@@ -13,9 +13,10 @@ const ItemListContainer = ({ products }) => {
       container
       spacing={{ xs: 2, md: 5 }}
       columnSpacing={{ xs: 4, sm: 8, md: 12 }}
+      paddingTop="2rem"
     >
       {productsByCategory.map((product) => (
-        <Grid item xs={12} key={product.id}>
+        <Grid item xs={12} md={3} key={product.id}>
           <Item key={product.id} product={product} />
         </Grid>
       ))}
