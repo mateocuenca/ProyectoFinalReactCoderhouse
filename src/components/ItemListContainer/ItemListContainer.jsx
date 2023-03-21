@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import { Grid, GridItem } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 import Item from "../Item.jsx";
 
@@ -10,15 +10,25 @@ const ItemListContainer = ({ products }) => {
 
   return (
     <Grid
-      container
-      spacing={{ xs: 2, md: 5 }}
-      columnSpacing={{ xs: 4, sm: 8, md: 12 }}
-      paddingTop="2rem"
+      templateColumns={{
+        base: "1",
+        sm: "repeat(2, 1fr)",
+        md: "repeat(3, 1fr)",
+        lg: "repeat(4, 1fr)",
+      }}
+      gap={6}
+      p={{ base: "10px", md: "25px", lg: "50px" }}
     >
       {productsByCategory.map((product) => (
-        <Grid item xs={12} md={3} key={product.id}>
+        <GridItem
+          w="100%"
+          bg="teal.50"
+          borderRadius="lg"
+          p="2"
+          key={product.id}
+        >
           <Item key={product.id} product={product} />
-        </Grid>
+        </GridItem>
       ))}
     </Grid>
   );

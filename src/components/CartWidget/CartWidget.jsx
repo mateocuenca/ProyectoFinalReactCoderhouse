@@ -1,11 +1,11 @@
 import React from "react";
-import { Typography } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import { Text } from "@chakra-ui/react";
 
 const CartWidget = ({ cartItems }) => {
   return (
     <div style={{ position: "relative", display: "inline-block" }}>
-      <ShoppingCartIcon />
+      <ShoppingCartIcon fontSize="large" />
       <div
         style={{
           position: "absolute",
@@ -20,9 +20,7 @@ const CartWidget = ({ cartItems }) => {
           alignItems: "center",
         }}
       >
-        <Typography variant="body1" component="span" sx={{ color: "white" }}>
-          {cartItems}
-        </Typography>
+        <Text color="white">{cartItems}</Text>
       </div>
     </div>
   );
