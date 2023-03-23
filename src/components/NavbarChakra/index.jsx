@@ -14,7 +14,7 @@ import { NavLink } from "react-router-dom";
 import CartWidget from "../CartWidget/CartWidget";
 import { HamburgerIcon } from "@chakra-ui/icons";
 
-const Navbar = () => {
+const Navbar = ({ cartCount }) => {
   return (
     <Flex
       as="nav"
@@ -25,6 +25,11 @@ const Navbar = () => {
       borderBottom="1px"
       borderColor="teal"
       justifyContent="space-between"
+      position="fixed"
+      top="0"
+      left="0"
+      right="0"
+      zIndex={1}
     >
       <Menu>
         <MenuButton
@@ -36,13 +41,13 @@ const Navbar = () => {
           display={["flex", "flex", "none", "none"]}
         ></MenuButton>
         <MenuList>
-          <NavLink to="/category/men's clothing">
+          <NavLink to="/category/men's-clothing">
             <MenuItem>Men</MenuItem>
           </NavLink>
-          <NavLink to="/category/women's clothing">
+          <NavLink to="/category/women's-clothing">
             <MenuItem>Women</MenuItem>
           </NavLink>
-          <NavLink to="/category/jewerly">
+          <NavLink to="/category/jewelery">
             <MenuItem>Jewerly</MenuItem>
           </NavLink>
           <NavLink to="/category/electronics">
@@ -60,32 +65,32 @@ const Navbar = () => {
       <Spacer />
 
       <HStack spacing="20px" display={["none", "none", "flex", "flex"]}>
-        <NavLink to="/category/men's clothing">
-          <Button variant="ghost" colorScheme="teal">
+        <NavLink to="/category/men's-clothing">
+          <Button variant="ghost" colorScheme="teal" size="lg">
             Men
           </Button>
         </NavLink>
-        <NavLink to="/category/women's clothing">
-          <Button variant="ghost" colorScheme="teal">
+        <NavLink to="/category/women's-clothing">
+          <Button variant="ghost" colorScheme="teal" size="lg">
             Women
           </Button>
         </NavLink>
         <NavLink to="/category/jewelery">
-          <Button variant="ghost" colorScheme="teal">
+          <Button variant="ghost" colorScheme="teal" size="lg">
             Jewerly
           </Button>
         </NavLink>
         <NavLink to="/category/electronics">
-          <Button variant="ghost" colorScheme="teal">
+          <Button variant="ghost" colorScheme="teal" size="lg">
             Electronics
           </Button>
         </NavLink>
       </HStack>
       <Spacer display={["none", "none", "flex", "flex"]} />
 
-      <NavLink>
+      <NavLink to="/cart">
         <IconButton
-          icon={<CartWidget cartItems={4} />}
+          icon={<CartWidget cartCount={cartCount} />}
           colorScheme="teal"
           variant="ghost"
         />

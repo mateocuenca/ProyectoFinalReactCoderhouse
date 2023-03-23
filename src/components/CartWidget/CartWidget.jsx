@@ -2,25 +2,25 @@ import React from "react";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { Text } from "@chakra-ui/react";
 
-const CartWidget = ({ cartItems }) => {
+const CartWidget = ({ cartCount }) => {
   return (
     <div style={{ position: "relative", display: "inline-block" }}>
       <ShoppingCartIcon fontSize="large" />
       <div
         style={{
           position: "absolute",
-          top: "-10px",
-          right: "-10px",
+          top: "-15px",
+          right: "-20px",
           backgroundColor: "red",
           borderRadius: "50%",
-          width: "20px",
-          height: "20px",
+          width: "30px",
+          height: "30px",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
         }}
       >
-        <Text color="white">{cartItems}</Text>
+        <Text color="white">{cartCount}</Text>
       </div>
     </div>
   );
