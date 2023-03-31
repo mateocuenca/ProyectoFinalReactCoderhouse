@@ -7,6 +7,7 @@ import ItemDetailContainer from "./components/ItemDetailContainer";
 import db from "../db/firebase-config";
 import { collection, getDocs } from "firebase/firestore";
 import Cart from "./components/Cart";
+import { Center, Heading } from "@chakra-ui/react";
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -16,6 +17,7 @@ function App() {
 
   const productsCollectionRef = collection(db, "products");
   const cartCollectionRef = collection(db, "cart");
+  const ordersCollectionRef = collection(db, "orders");
 
   const getProducts = async () => {
     const productsCollection = await getDocs(productsCollectionRef);
@@ -30,6 +32,7 @@ function App() {
     setCartProducts(
       cartCollection.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
     );
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -62,6 +65,14 @@ function App() {
           }
         ></Route>
         <Route
+          path="*"
+          element={
+            <Center my="20rem" color="teal">
+              <Heading>Page not found</Heading>
+            </Center>
+          }
+        ></Route>
+        <Route
           path="/category/:category"
           element={
             <ItemListContainer
@@ -83,7 +94,18 @@ function App() {
             />
           }
         ></Route>
-        <Route path="/cart" element={<Cart />}></Route>
+        <Route
+          path="/cart"
+          element={
+            <Cart
+              loading={loading}
+              getCartProducts={getCartProducts}
+              cartProducts={cartProducts}
+              cartCollectionRef={cartCollectionRef}
+              ordersCollectionRef={ordersCollectionRef}
+            />
+          }
+        ></Route>
       </Routes>
     </>
   );
