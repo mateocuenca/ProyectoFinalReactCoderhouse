@@ -12,8 +12,10 @@ import {
 } from "@chakra-ui/react";
 import { addDoc, doc, updateDoc, getDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import db from "../../../db/firebase-config";
+import AddToCartBtn from "../AddToCartBtn";
+import BuyBtn from "../BuyBtn";
 import LoadingSpinner from "../LoadingSpinner";
 
 const ItemDetailContainer = ({
@@ -24,12 +26,6 @@ const ItemDetailContainer = ({
   const { id } = useParams();
   const [product, setProduct] = useState({});
   const [loading, setLoading] = useState(true);
-  const [addToCartBtnText, setAddToCartBtnText] = useState("Add to cart");
-  const productExistsInCart = cartProducts.find(
-    (cartProduct) => cartProduct.title === product.title
-  );
-
-  const toast = useToast();
 
   const getProduct = async (id) => {
     const docRef = doc(db, "products", id);
@@ -38,31 +34,6 @@ const ItemDetailContainer = ({
       setProduct(docSnap.data());
     }
     setLoading(false);
-  };
-
-  const addToCart = async (product) => {
-    getCartProducts();
-    if (productExistsInCart) {
-      const productInCartRef = doc(db, "cart", productExistsInCart.id);
-      await updateDoc(productInCartRef, {
-        quantity: productExistsInCart.quantity + 1,
-      });
-
-      toast({
-        title: `${productExistsInCart.quantity + 1} unit(s) of ${
-          productExistsInCart.title
-        } in cart`,
-        status: "success",
-        isClosable: true,
-      });
-    } else {
-      await addDoc(cartCollectionRef, { ...product, quantity: 1 });
-      toast({
-        title: `${product.title} added to cart`,
-        status: "success",
-        isClosable: true,
-      });
-    }
   };
 
   useEffect(() => {
@@ -114,18 +85,20 @@ const ItemDetailContainer = ({
         </Text>
         <CardFooter>
           <ButtonGroup spacing="2" m="auto">
-            <Button variant="solid" colorScheme="teal">
-              Buy now
-            </Button>
-            <Button
-              variant="ghost"
-              colorScheme="teal"
-              onClick={() => addToCart(product)}
-            >
-              {productExistsInCart
-                ? `Add to cart (${productExistsInCart.quantity})`
-                : addToCartBtnText}
-            </Button>
+            <NavLink to="/cart">
+              <BuyBtn
+                product={product}
+                getCartProducts={getCartProducts}
+                cartProducts={cartProducts}
+                cartCollectionRef={cartCollectionRef}
+              />
+            </NavLink>
+            <AddToCartBtn
+              product={product}
+              getCartProducts={getCartProducts}
+              cartProducts={cartProducts}
+              cartCollectionRef={cartCollectionRef}
+            />
           </ButtonGroup>
         </CardFooter>
       </Stack>

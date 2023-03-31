@@ -15,6 +15,8 @@ import { addDoc, doc, updateDoc } from "firebase/firestore";
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import db from "../../../db/firebase-config";
+import AddToCartBtn from "../AddToCartBtn";
+import BuyBtn from "../BuyBtn";
 
 const Item = ({
   product,
@@ -22,37 +24,6 @@ const Item = ({
   cartProducts,
   cartCollectionRef,
 }) => {
-  const [addToCartBtnText, setAddToCartBtnText] = useState("Add to cart");
-  const productExistsInCart = cartProducts.find(
-    (cartProduct) => cartProduct.title === product.title
-  );
-  const toast = useToast();
-
-  const addToCart = async (product) => {
-    getCartProducts();
-    if (productExistsInCart) {
-      const productInCartRef = doc(db, "cart", productExistsInCart.id);
-      await updateDoc(productInCartRef, {
-        quantity: productExistsInCart.quantity + 1,
-      });
-
-      toast({
-        title: `${productExistsInCart.quantity + 1} unit(s) of ${
-          productExistsInCart.title
-        } in cart`,
-        status: "success",
-        isClosable: true,
-      });
-    } else {
-      await addDoc(cartCollectionRef, { ...product, quantity: 1 });
-      toast({
-        title: `${product.title} added to cart`,
-        status: "success",
-        isClosable: true,
-      });
-    }
-  };
-
   return (
     <Card h="35rem">
       <NavLink to={`/item/${product.id}`}>
@@ -79,18 +50,20 @@ const Item = ({
       <Divider color="teal.200" />
       <CardFooter>
         <ButtonGroup spacing="2" margin="auto">
-          <Button variant="solid" colorScheme="teal">
-            Buy now
-          </Button>
-          <Button
-            variant="ghost"
-            colorScheme="teal"
-            onClick={() => addToCart(product)}
-          >
-            {productExistsInCart
-              ? `Add to cart (${productExistsInCart.quantity})`
-              : addToCartBtnText}
-          </Button>
+          <NavLink to="/cart">
+            <BuyBtn
+              product={product}
+              getCartProducts={getCartProducts}
+              cartProducts={cartProducts}
+              cartCollectionRef={cartCollectionRef}
+            />
+          </NavLink>
+          <AddToCartBtn
+            product={product}
+            getCartProducts={getCartProducts}
+            cartProducts={cartProducts}
+            cartCollectionRef={cartCollectionRef}
+          />
         </ButtonGroup>
       </CardFooter>
     </Card>
