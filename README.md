@@ -1,5 +1,7 @@
 "Mate Store "Ecommerce
 
+This project is deployed in https://proyecto-final-react-coderhouse-d8v1.vercel.app/
+
 This is a React-based ecommerce store that uses a Firestore database to manage product data and customer orders. The project includes three main collections in Firestore: products, cart, and orders.
 
 Features
